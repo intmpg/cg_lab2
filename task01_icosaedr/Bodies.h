@@ -5,10 +5,10 @@
 #include <boost/noncopyable.hpp>
 
 
-class CIcosahedron
+class CIcosaedr
 {
 public:
-	CIcosahedron();
+	CIcosaedr();
     void Update(float deltaTime);
     void Draw()const;
 

@@ -1,7 +1,6 @@
 #pragma once
 
-#include <memory>			 
-
+#include <memory>
 #include <boost/noncopyable.hpp>
 #include <glm/fwd.hpp>
 #include <SDL2/SDL_events.h>

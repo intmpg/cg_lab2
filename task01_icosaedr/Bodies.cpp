@@ -30,27 +30,27 @@ enum class Colors
 };
 
 
-const GLfloat SPHERE_RADIUS = 1;
-const double ICOSAHEDRON_SIDE = 4 * SPHERE_RADIUS / sqrt(10 + 2 * sqrt(5));
-const double ANGLE = acos((1 - ICOSAHEDRON_SIDE*ICOSAHEDRON_SIDE / 2 / SPHERE_RADIUS / SPHERE_RADIUS)); // первый угол поворота по тэта 
-const double ANGLE_TO_RAD = M_PI / 180;
+const GLfloat RADIUS_SPHERE = 0.75;
+const double ICOSAHEDRON_SIDE = 4 * RADIUS_SPHERE / sqrt(10 + 2 * sqrt(5));
+const double ALPHA = acos((1 - ICOSAHEDRON_SIDE*ICOSAHEDRON_SIDE / 2 / RADIUS_SPHERE / RADIUS_SPHERE)); // первый угол поворота по тэта 
+const double k = M_PI / 180;
 
 const Vertex ICOSAHEDRON_VERTICIES[] =
 {
-	{0, 0, SPHERE_RADIUS },
-	{ SPHERE_RADIUS*sin(ANGLE)*sin(0), SPHERE_RADIUS*sin(ANGLE)*cos(0), SPHERE_RADIUS*cos(ANGLE) },
-	{ SPHERE_RADIUS*sin(ANGLE)*sin(72 * ANGLE_TO_RAD) , SPHERE_RADIUS*sin(ANGLE)*cos(72 * ANGLE_TO_RAD) , SPHERE_RADIUS*cos(ANGLE) },
-	{ SPHERE_RADIUS*sin(ANGLE)*sin(2 * 72 * ANGLE_TO_RAD) , SPHERE_RADIUS*sin(ANGLE)*cos(2 * 72 * ANGLE_TO_RAD) , SPHERE_RADIUS*cos(ANGLE) },
-	{ SPHERE_RADIUS*sin(ANGLE)*sin(3 * 72 * ANGLE_TO_RAD) , SPHERE_RADIUS*sin(ANGLE)*cos(3 * 72 * ANGLE_TO_RAD) , SPHERE_RADIUS*cos(ANGLE) },
-	{ SPHERE_RADIUS*sin(ANGLE)*sin(4 * 72 * ANGLE_TO_RAD) , SPHERE_RADIUS*sin(ANGLE)*cos(4 * 72 * ANGLE_TO_RAD) , SPHERE_RADIUS*cos(ANGLE) },
+	{0, 0, RADIUS_SPHERE },
+	{ RADIUS_SPHERE*sin(ALPHA)*sin(0), RADIUS_SPHERE*sin(ALPHA)*cos(0), RADIUS_SPHERE*cos(ALPHA) },
+	{ RADIUS_SPHERE*sin(ALPHA)*sin(72 * k) , RADIUS_SPHERE*sin(ALPHA)*cos(72 * k) , RADIUS_SPHERE*cos(ALPHA) },
+	{ RADIUS_SPHERE*sin(ALPHA)*sin(2 * 72 * k) , RADIUS_SPHERE*sin(ALPHA)*cos(2 * 72 * k) , RADIUS_SPHERE*cos(ALPHA) },
+	{ RADIUS_SPHERE*sin(ALPHA)*sin(3 * 72 * k) , RADIUS_SPHERE*sin(ALPHA)*cos(3 * 72 * k) , RADIUS_SPHERE*cos(ALPHA) },
+	{ RADIUS_SPHERE*sin(ALPHA)*sin(4 * 72 * k) , RADIUS_SPHERE*sin(ALPHA)*cos(4 * 72 * k) , RADIUS_SPHERE*cos(ALPHA) },
 
-	{ SPHERE_RADIUS*sin(M_PI - ANGLE)*sin(-36 * ANGLE_TO_RAD), SPHERE_RADIUS*sin(M_PI - ANGLE)*cos(-36 * ANGLE_TO_RAD), SPHERE_RADIUS*cos(M_PI - ANGLE) },
-	{ SPHERE_RADIUS*sin(M_PI - ANGLE)*sin(36 * ANGLE_TO_RAD), SPHERE_RADIUS*sin(M_PI - ANGLE)*cos(36 * ANGLE_TO_RAD), SPHERE_RADIUS*cos(M_PI - ANGLE) },
-	{ SPHERE_RADIUS*sin(M_PI - ANGLE)*sin((36 + 72)* ANGLE_TO_RAD), SPHERE_RADIUS*sin(M_PI - ANGLE)*cos((36 + 72) * ANGLE_TO_RAD), SPHERE_RADIUS*cos(M_PI - ANGLE) },
-	{ SPHERE_RADIUS*sin(M_PI - ANGLE)*sin((36 + 2*72)* ANGLE_TO_RAD), SPHERE_RADIUS*sin(M_PI - ANGLE)*cos((36 + 2*72) * ANGLE_TO_RAD), SPHERE_RADIUS*cos(M_PI - ANGLE) },
-	{ SPHERE_RADIUS*sin(M_PI - ANGLE)*sin((36 + 3 * 72)* ANGLE_TO_RAD), SPHERE_RADIUS*sin(M_PI - ANGLE)*cos((36 + 3 * 72) * ANGLE_TO_RAD), SPHERE_RADIUS*cos(M_PI - ANGLE) },
+	{ RADIUS_SPHERE*sin(M_PI - ALPHA)*sin(-36 * k), RADIUS_SPHERE*sin(M_PI - ALPHA)*cos(-36 * k), RADIUS_SPHERE*cos(M_PI - ALPHA) },
+	{ RADIUS_SPHERE*sin(M_PI - ALPHA)*sin(36 * k), RADIUS_SPHERE*sin(M_PI - ALPHA)*cos(36 * k), RADIUS_SPHERE*cos(M_PI - ALPHA) },
+	{ RADIUS_SPHERE*sin(M_PI - ALPHA)*sin((36 + 72)* k), RADIUS_SPHERE*sin(M_PI - ALPHA)*cos((36 + 72) * k), RADIUS_SPHERE*cos(M_PI - ALPHA) },
+	{ RADIUS_SPHERE*sin(M_PI - ALPHA)*sin((36 + 2*72)* k), RADIUS_SPHERE*sin(M_PI - ALPHA)*cos((36 + 2*72) * k), RADIUS_SPHERE*cos(M_PI - ALPHA) },
+	{ RADIUS_SPHERE*sin(M_PI - ALPHA)*sin((36 + 3 * 72)* k), RADIUS_SPHERE*sin(M_PI - ALPHA)*cos((36 + 3 * 72) * k), RADIUS_SPHERE*cos(M_PI - ALPHA) },
 
-	{0, 0, -SPHERE_RADIUS}
+	{0, 0, -RADIUS_SPHERE}
 };
 
 
@@ -91,38 +91,35 @@ const STriangleFace ICOSAHEDRON_FACES[] =
 
 }
 
-CIcosahedron::CIcosahedron()
-	: m_alpha(0)
+CIcosaedr::CIcosaedr()
+	: m_alpha(1)
 {
 }
 
-void CIcosahedron::Update(float deltaTime)
+void CIcosaedr::Update(float deltaTime)
 {
     (void)deltaTime;
 }
 
-void CIcosahedron::Draw() const
+void CIcosaedr::Draw() const
 {
-
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
-
-	glBegin(GL_TRIANGLES);
+	if (m_alpha < 0.99f)
+	{
+		glFrontFace(GL_CW);
+		OutputFaces();
+		glFrontFace(GL_CCW);
+	}
 	OutputFaces();
-	glEnd();		  
-
 }
 
-void CIcosahedron::SetAlpha(float alpha)
+void CIcosaedr::SetAlpha(float alpha)
 {
 	m_alpha = alpha;
 }
 
-void CIcosahedron::OutputFaces() const
+void CIcosaedr::OutputFaces() const
 {
+	glBegin(GL_TRIANGLES);
 	
 	for (const STriangleFace &face : ICOSAHEDRON_FACES)
 	{
@@ -137,8 +134,8 @@ void CIcosahedron::OutputFaces() const
 		glVertex3fv(glm::value_ptr(v1));
 		glVertex3fv(glm::value_ptr(v2));
 		glVertex3fv(glm::value_ptr(v3));
-	}	 
-
+	}	
+	glEnd();
 }
 
 

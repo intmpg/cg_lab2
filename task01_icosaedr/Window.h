@@ -27,7 +27,7 @@ private:
 	void SetupView(const glm::ivec2 &size);
 	float m_time = 0.f;
 
-	CIcosahedron m_rhombicuboctahedron;
+	CIcosaedr m_rhombicuboctahedron;
 	CCamera m_camera;
 	CDirectedLightSource m_sunlight;
 };
